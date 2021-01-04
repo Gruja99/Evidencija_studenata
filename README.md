@@ -8,3 +8,4 @@ Pokrenuti aplikaciju: CMD iz app.py i pokrenuti je komandom python app.py
 U pretrazivacu kucati: localhost:5000/studenti
 
 -----------------------------------------
+Koriscenje Flaska i SQL(trigeri, funkcije, procedure)
