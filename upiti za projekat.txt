@@ -1,0 +1,82 @@
+TRIGERI
+
+-- triger1 - ocene: ako se unose ocena manja od 6, da postane 6
+DELIMITER $$
+
+CREATE TRIGGER neprolazna_ocena
+BEFORE INSERT ON ocene FOR EACH ROW 
+BEGIN
+IF NEW.ocena < 6 
+THEN SET NEW.ocena = 6;
+END IF;
+END $$
+DELIMITER ;
+-----------------------------------------------------------
+-- triger2 - studenti: ako je ukupan espb 36/72 menjaju se godine studija, a ako je espb 180, godina studija se menja na 0
+
+DELIMITER $$
+
+CREATE TRIGGER promena_godina_studija
+BEFORE UPDATE ON studenti FOR EACH ROW 
+BEGIN
+IF NEW.espb > 36 AND NEW.espb <= 60
+THEN SET NEW.godina_studija = 2;
+ELSEIF NEW.espb > 72 AND NEW.espb <= 120
+THEN SET NEW.godina_studija = 3;
+ELSEIF NEW.espb = 180
+THEN SET NEW.godina_studija = 0;
+END IF;
+END $$
+DELIMITER ;
+-----------------------------------------------------------
+-- triger3 - studenti: ako obrisemo studenta u tabeli studenti, brisu se i sve ocene sa id-jem obrisanog studenta iz tabele ocene
+
+DELIMITER $$
+
+CREATE TRIGGER brisanje_studenta
+AFTER DELETE ON studenti FOR EACH ROW 
+BEGIN
+DELETE FROM ocene WHERE student_id=OLD.id;
+END $$
+DELIMITER ;
+
+-----------------------------------------------------------
+-- triger4 - predmeti: ako predmet koji se unosi ima vise od 6 espb automatski postaje obavezan
+
+DELIMITER $$
+
+CREATE TRIGGER obavezni_izborni
+BEFORE INSERT ON predmeti FOR EACH ROW 
+BEGIN
+IF NEW.espb > 6
+THEN SET NEW.obavezni_izborni = 'obavezni';
+END IF;
+END $$
+DELIMITER ;
+
+-----------------------------------------------------------
+POGLEDI
+
+
+-- pogled1 - studenti -  kreiranje pogleda koji lista studente ciji se broj indeksa zavrsava sa /17 i podupit da su zavrsili sve ispite (imaju 180 espb)
+
+CREATE VIEW p_studenti_17 AS
+SELECT * FROM studenti WHERE broj_indeksa LIKE '%/17';
+
+CREATE VIEW p_zavrsili_17 AS
+SELECT * FROM p_studenti_17 WHERE godina_studija = 0;
+
+-----------------------------------------------------------
+FUNKCIJE
+
+-- funkcija1 - CONCAT funkcija koja lista ime, prezime i broj telefona
+
+
+SELECT ime, prezime, broj_telefona,  CONCAT (ime, " ", prezime, " ", broj_telefona ) AS Kontakt FROM studenti;
+
+
+-- funkcija2 - funkcija koja lista sve koji imaju @hotmail adresu
+
+SELECT 
+
+-- funkcija3 - 

@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Evidencija studenata</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href={{ url_for( 'studenti') }}>Studenti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for( 'predmeti') }}>Predmeti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for( 'korisnici') }}>Korisnici</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for( 'telefon') }}>Telefon studenata</a>
+            </li>
+        </ul>
+
+        <form class="form-inline" action={{ url_for( 'logout') }} method="GET">
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </form>
+
+        <!-- <a href={{ url_for('logout') }}>
+            <i class="fas fa-sign-out-alt"></i>
+        </a> -->
+    </div>
+</nav>
+
+<div class="container">
+
+
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Kontakt</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for telefon in tel_studenti %}
+                <tr>
+                    <td>{{telefon.Kontakt }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
